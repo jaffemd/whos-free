@@ -8,6 +8,7 @@ import AddResponseModal from '../components/AddResponseModal';
 import ShareModal from '../components/ShareModal';
 import { GroupPageSkeleton } from '../components/LoadingSkeleton';
 import { ColorSchemeToggle } from '../components/ColorSchemeToggle';
+import { apiUrl } from '../config/api';
 
 interface GroupData {
   id: string;
@@ -43,7 +44,7 @@ export default function GroupViewPage({ colorScheme, toggleColorScheme }: GroupV
 
     setIsLoading(true);
     try {
-      const response = await fetch(`/api/groups/${id}`);
+      const response = await fetch(apiUrl(`api/groups/${id}`));
       if (response.ok) {
         const data = await response.json();
         setGroup(data.group);
@@ -118,7 +119,7 @@ export default function GroupViewPage({ colorScheme, toggleColorScheme }: GroupV
               <Text c="dimmed" mb="xs" size={{ base: "sm", sm: "md" }}>{group.description}</Text>
             )}
             <Text size="sm" c="dimmed">
-              Date: {new Date(group.date).toLocaleDateString()}
+              Date: {new Date(group.date + 'T00:00:00').toLocaleDateString()}
             </Text>
           </div>
           <Button

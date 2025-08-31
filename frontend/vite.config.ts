@@ -12,4 +12,9 @@ export default defineConfig({
       },
     },
   },
+  build: {
+    outDir: 'dist',
+    sourcemap: false,
+  },
+  // Remove the define section - let Vite handle env vars naturally
 })

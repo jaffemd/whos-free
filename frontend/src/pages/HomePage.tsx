@@ -4,6 +4,7 @@ import { Container, Paper, Title, TextInput, Textarea, Button, Stack, Group } fr
 import { DateInput } from '@mantine/dates';
 import { notifications } from '@mantine/notifications';
 import { ColorSchemeToggle } from '../components/ColorSchemeToggle';
+import { apiUrl } from '../config/api';
 
 interface HomePageProps {
   colorScheme: 'light' | 'dark';
@@ -48,24 +49,64 @@ export default function HomePage({ colorScheme, toggleColorScheme }: HomePagePro
       return;
     }
 
-    const today = new Date();
-    today.setHours(0, 0, 0, 0);
-    
-    const selectedDate = date instanceof Date ? date : new Date(date);
-    selectedDate.setHours(0, 0, 0, 0);
-    
-    if (selectedDate < today) {
+    // Convert date to Date object if it's a string
+    let dateObj: Date;
+    if (typeof date === 'string') {
+      // Parse the date string (format: YYYY-MM-DD)
+      dateObj = new Date(date + 'T00:00:00.000'); // Add time to ensure local timezone
+    } else if (date instanceof Date) {
+      dateObj = date;
+    } else {
       notifications.show({
         title: 'Validation Error',
-        message: 'Date cannot be in the past.',
+        message: 'Please select a valid date.',
         color: 'red',
       });
       return;
     }
 
+    // Validate the parsed date
+    if (isNaN(dateObj.getTime())) {
+      notifications.show({
+        title: 'Validation Error',
+        message: 'Please select a valid date.',
+        color: 'red',
+      });
+      return;
+    }
+
+    // Create consistent date comparison using local timezone
+    const today = new Date();
+    const todayLocal = new Date(today.getFullYear(), today.getMonth(), today.getDate());
+    
+    // Convert the selected date to local timezone for comparison
+    const selectedLocal = new Date(dateObj.getFullYear(), dateObj.getMonth(), dateObj.getDate());
+    
+    if (selectedLocal < todayLocal) {
+      const todayString = today.getFullYear() + '-' + 
+                         String(today.getMonth() + 1).padStart(2, '0') + '-' + 
+                         String(today.getDate()).padStart(2, '0');
+      const selectedString = dateObj.getFullYear() + '-' + 
+                            String(dateObj.getMonth() + 1).padStart(2, '0') + '-' + 
+                            String(dateObj.getDate()).padStart(2, '0');
+      
+      notifications.show({
+        title: 'Validation Error',
+        message: `Date cannot be in the past. Selected: ${selectedString}, Today: ${todayString}`,
+        color: 'red',
+      });
+      return;
+    }
+    
+    // Format date for API (YYYY-MM-DD) - use original string if available, otherwise format dateObj
+    const selectedString = typeof date === 'string' ? date : 
+                          dateObj.getFullYear() + '-' + 
+                          String(dateObj.getMonth() + 1).padStart(2, '0') + '-' + 
+                          String(dateObj.getDate()).padStart(2, '0');
+
     setIsLoading(true);
     try {
-      const response = await fetch('/api/groups', {
+      const response = await fetch(apiUrl('api/groups'), {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -73,7 +114,7 @@ export default function HomePage({ colorScheme, toggleColorScheme }: HomePagePro
         body: JSON.stringify({
           name: name.trim(),
           description: description.trim() || undefined,
-          date: selectedDate.toISOString().split('T')[0],
+          date: selectedString,
         }),
       });
 
@@ -137,11 +178,6 @@ export default function HomePage({ colorScheme, toggleColorScheme }: HomePagePro
               required
               withAsterisk
               minDate={new Date()}
-              excludeDate={(date) => {
-                const today = new Date();
-                today.setHours(0, 0, 0, 0);
-                return date < today;
-              }}
               weekendDays={[]}
             />
 

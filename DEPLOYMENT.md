@@ -15,98 +15,13 @@ The deployment consists of three Render services:
 - **Web Service** (Backend) - Node.js/Express API server  
 - **PostgreSQL Database** - Managed database instance
 
-## Step 1: Prepare for Deployment
+## Step 1: Push Code to GitHub
 
-### 1.1 Update Backend Environment Configuration
-
-Create production environment file in the backend directory:
-
-```bash
-cd backend
-cp .env.example .env.production
-```
-
-Update `backend/.env.production`:
-```env
-DATABASE_URL=postgresql://username:password@host:port/database
-PORT=10000
-NODE_ENV=production
-```
-
-### 1.2 Update Backend Package.json Scripts
-
-Ensure your `backend/package.json` has the correct scripts:
-```json
-{
-  "scripts": {
-    "dev": "tsx watch src/index.ts",
-    "build": "tsc",
-    "start": "node dist/index.js",
-    "postbuild": "npx prisma generate"
-  }
-}
-```
-
-### 1.3 Create Build Script
-
-Create `backend/render-build.sh`:
-```bash
-#!/usr/bin/env bash
-# Exit on error
-set -o errexit
-
-# Install dependencies
-npm install
-
-# Build shared types
-cd ../shared
-npm install
-npm run build
-
-# Return to backend and build
-cd ../backend
-npm run build
-
-# Generate Prisma client
-npx prisma generate
-
-# Run database migrations
-npx prisma db push
-```
-
-Make it executable:
-```bash
-chmod +x backend/render-build.sh
-```
-
-### 1.4 Update Frontend Build Configuration
-
-Update `frontend/vite.config.ts` for production:
-```typescript
-import { defineConfig } from 'vite'
-import react from '@vitejs/plugin-react'
-
-export default defineConfig({
-  plugins: [react()],
-  server: {
-    proxy: {
-      '/api': {
-        target: 'http://localhost:3001',
-        changeOrigin: true,
-      },
-    },
-  },
-  build: {
-    outDir: 'dist',
-  },
-})
-```
-
-### 1.5 Commit and Push Changes
+Ensure all your code is committed and pushed to your GitHub repository:
 
 ```bash
 git add .
-git commit -m "Prepare for Render deployment"
+git commit -m "Prepare for deployment"
 git push origin main
 ```
 
@@ -179,43 +94,18 @@ The build will start automatically. Wait for it to complete (may take 5-10 minut
 
 5. **Click "Create Static Site"**
 
-## Step 5: Update Frontend API Calls
+## Step 5: Update Environment Variables
 
-After deployment, update your frontend to use the production API URL.
+After both services are deployed, you need to update the frontend's environment variable:
 
-Create `frontend/.env.production`:
-```env
-VITE_API_URL=https://your-backend-service.onrender.com
-```
+1. **Go to your Static Site** → "Environment" tab
+2. **Update `VITE_API_URL`** with your actual backend URL:
+   ```
+   VITE_API_URL=https://your-actual-backend-service.onrender.com
+   ```
+3. **Save changes** - this will trigger a new deployment
 
-Update API calls to use the environment variable:
-```typescript
-const API_URL = import.meta.env.VITE_API_URL || '';
-
-// In your fetch calls:
-const response = await fetch(`${API_URL}/api/groups`, {
-  // ... rest of fetch config
-});
-```
-
-Commit and push these changes to trigger a new deployment.
-
-## Step 6: Configure CORS for Production
-
-Update `backend/src/index.ts`:
-```typescript
-import cors from 'cors';
-
-// Add your frontend URL to CORS origins
-app.use(cors({
-  origin: [
-    'http://localhost:5173', // Development
-    'https://your-frontend-site.onrender.com' // Production
-  ]
-}));
-```
-
-## Step 7: Verify Deployment
+## Step 6: Verify Deployment
 
 1. **Check Backend Health:**
    - Visit `https://your-backend-service.onrender.com/health`

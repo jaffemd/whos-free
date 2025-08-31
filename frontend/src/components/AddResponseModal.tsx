@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import { Modal, TextInput, Radio, Textarea, Button, Group, Stack } from '@mantine/core';
 import { notifications } from '@mantine/notifications';
+import { apiUrl } from '../config/api';
 
 interface AddResponseModalProps {
   groupId: string;
@@ -38,7 +39,7 @@ export default function AddResponseModal({ groupId, onClose, onSuccess }: AddRes
 
     setIsLoading(true);
     try {
-      const response = await fetch(`/api/groups/${groupId}/responses`, {
+      const response = await fetch(apiUrl(`api/groups/${groupId}/responses`), {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',

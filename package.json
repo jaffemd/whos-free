@@ -11,7 +11,11 @@
   "scripts": {
     "dev": "npm run dev --workspace=frontend & npm run dev --workspace=backend",
     "build": "npm run build --workspace=shared && npm run build --workspace=backend && npm run build --workspace=frontend",
-    "start": "npm run start --workspace=backend"
+    "build:frontend": "npm run build --workspace=frontend",
+    "build:backend": "npm run build --workspace=backend", 
+    "build:shared": "npm run build --workspace=shared",
+    "start": "npm run start --workspace=backend",
+    "postinstall": "npm run build:shared"
   },
   "devDependencies": {
     "typescript": "^5.0.0"

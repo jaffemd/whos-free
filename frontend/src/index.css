@@ -1,0 +1,36 @@
+@import '@mantine/core/styles.css';
+@import '@mantine/dates/styles.css';
+@import '@mantine/notifications/styles.css';
+
+body {
+  margin: 0;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
+    'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
+    sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+/* Fix weekend styling in DateInput - make all days have same font color */
+/* Use CSS layers to ensure override */
+@layer components {
+  .mantine-DatePicker-day[data-weekend],
+  .mantine-Calendar-day[data-weekend] {
+    color: var(--mantine-color-text) !important;
+  }
+
+  [data-mantine-color-scheme="light"] .mantine-DatePicker-day[data-weekend],
+  [data-mantine-color-scheme="light"] .mantine-Calendar-day[data-weekend] {
+    color: var(--mantine-color-black) !important;
+  }
+
+  [data-mantine-color-scheme="dark"] .mantine-DatePicker-day[data-weekend],
+  [data-mantine-color-scheme="dark"] .mantine-Calendar-day[data-weekend] {
+    color: var(--mantine-color-white) !important;
+  }
+
+  .mantine-DatePicker-day[data-weekend]:not([data-disabled]):not([data-selected]):hover,
+  .mantine-Calendar-day[data-weekend]:not([data-disabled]):not([data-selected]):hover {
+    color: inherit !important;
+  }
+}

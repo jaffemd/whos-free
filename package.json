@@ -1,0 +1,19 @@
+{
+  "name": "whos-free",
+  "version": "1.0.0",
+  "description": "A simple availability tracking app for groups",
+  "private": true,
+  "workspaces": [
+    "frontend",
+    "backend",
+    "shared"
+  ],
+  "scripts": {
+    "dev": "npm run dev --workspace=frontend & npm run dev --workspace=backend",
+    "build": "npm run build --workspace=shared && npm run build --workspace=backend && npm run build --workspace=frontend",
+    "start": "npm run start --workspace=backend"
+  },
+  "devDependencies": {
+    "typescript": "^5.0.0"
+  }
+}

@@ -33,7 +33,7 @@ Individual workspace commands:
 - **Frontend**: React, TypeScript, Mantine UI components, React Router, React Context API for state
 - **Backend**: Node.js, Express.js, TypeScript, Prisma ORM, PostgreSQL, Zod validation
 - **Database**: PostgreSQL with UUID primary keys and timestamp tracking
-- **Deployment**: Render (static site + web service + PostgreSQL)
+- **Deployment**: Vercel (static site + serverless functions + PostgreSQL)
 
 ### Key Database Tables
 - **groups**: Stores group information with name, description, date, and UUIDs
@@ -58,8 +58,8 @@ No authentication system - users enter names directly. Groups are protected only
 - **Form Validation**: Client-side validation with user feedback notifications
 - **Error Handling**: Comprehensive error boundaries and loading states
 - **Share Functionality**: Native Web Share API with clipboard fallback
-- **Database**: SQLite for development, PostgreSQL for production (Render)
-- **Deployment**: Ready for Render deployment (see DEPLOYMENT.md)
+- **Database**: SQLite for development, PostgreSQL for production (Vercel Postgres)
+- **Deployment**: Ready for Vercel deployment with serverless functions (see DEPLOYMENT.md)
 
 ## Recent Updates
 

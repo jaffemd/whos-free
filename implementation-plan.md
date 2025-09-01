@@ -103,36 +103,36 @@ CREATE TABLE responses (
 
 ## Deployment Plan
 
-### Render (Selected Option)
-**Frontend**: Render Static Site
-- Free static site hosting
+### Vercel (Selected Option)
+**Frontend**: Vercel Static Site
+- Free static site hosting with global CDN
 - Automatic builds from Git
-- Custom domains supported  
-- Global CDN
+- Custom domains supported
+- Excellent performance optimization
 
-**Backend**: Render Web Service
-- Free tier with 750 hours/month
-- Persistent server (not serverless)
-- Easy environment variable management
-- Docker support
+**Backend**: Vercel Serverless Functions
+- Serverless API routes in `/api` directory
+- Auto-scaling and zero cold starts
+- 100GB bandwidth and 1000 function invocations per day (free tier)
+- TypeScript support out of the box
 
-**Database**: Render PostgreSQL
-- Free PostgreSQL database
-- 1 GB storage
-- Automatic backups
-- Direct connection from backend
+**Database**: Vercel Postgres or External Provider
+- Vercel Postgres: Native integration with generous free tier
+- Alternative: Neon, Supabase, or PlanetScale for PostgreSQL
+- Seamless environment variable integration
 
-**Why Render**:
-- Everything in one platform (single dashboard)
-- Traditional server model (easier debugging)
-- Generous database storage (1 GB vs 256-512 MB alternatives)
-- No vendor lock-in (standard Docker deployment)
-- Persistent backend server (no function timeouts)
+**Why Vercel**:
+- Serverless architecture (no server management)
+- Excellent developer experience with zero configuration
+- Automatic HTTPS and global CDN
+- Perfect for React/Next.js applications
+- No cold start issues for typical usage patterns
 
 **Considerations**:
-- Free tier apps sleep after 15 minutes of inactivity
-- 750 compute hours/month limit (about 25 hours/day)
-- Docker builds take longer than optimized serverless deployments
+- Function execution time limits (10s hobby, 15s pro)
+- Designed for serverless workloads
+- Database connections need to be managed efficiently
+- Free tier limitations on function invocations
 
 ## Implementation Phases
 
@@ -152,11 +152,11 @@ CREATE TABLE responses (
 5. Style with consistent design system
 
 ### Phase 3: Deployment
-1. Set up Render account and services
-2. Configure Render PostgreSQL database
-3. Deploy backend as Render Web Service
-4. Deploy frontend as Render Static Site
-5. Configure environment variables and secrets
+1. Set up Vercel account and project
+2. Configure Vercel Postgres database (or external provider)
+3. Deploy serverless API functions to `/api` directory
+4. Deploy frontend as Vercel static site
+5. Configure environment variables for database connection
 6. Set up automatic deployments from Git
 7. Test production deployment
 
@@ -188,13 +188,13 @@ CREATE TABLE responses (
 
 ## Next Steps
 
-With Render selected as the deployment platform, the implementation can proceed with:
+With Vercel selected as the deployment platform, the implementation can proceed with:
 
-1. **Development Environment Setup**: Initialize monorepo with React frontend and Node.js/Express backend
+1. **Development Environment Setup**: Initialize monorepo with React frontend and serverless API functions
 2. **Database Design**: Implement Prisma schema and migrations for the groups and responses tables  
-3. **API Development**: Build RESTful endpoints for group and response management
+3. **API Development**: Build serverless functions in `/api` directory for group and response management
 4. **Frontend Implementation**: Create React components with Mantine UI styling and manual refresh functionality
-5. **Render Deployment**: Configure services and deploy to production
+5. **Vercel Deployment**: Configure project and deploy to production with serverless architecture
 6. **Data Management**: Plan and implement data retention policies
 
-The Render platform provides a solid foundation for this application with generous free tier limits and traditional server architecture that's easy to debug and maintain.
+The Vercel platform provides excellent developer experience with zero configuration deployment, automatic scaling, and perfect integration for React applications with serverless backend functions.

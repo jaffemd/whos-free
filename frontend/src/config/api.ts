@@ -10,10 +10,15 @@ export const apiUrl = (endpoint: string) => {
     return cleanEndpoint;
   }
   
-  // In production or when VITE_API_URL is explicitly set, use absolute URL
-  const baseUrl = API_BASE_URL || 'http://localhost:3001';
+  // In production without explicit API URL (Vercel deployment), use relative paths
+  if (!API_BASE_URL) {
+    const cleanEndpoint = endpoint.startsWith('/') ? endpoint : `/${endpoint}`;
+    return `/api/${cleanEndpoint.replace(/^\/api\//, '').replace(/^\//, '')}`;
+  }
+  
+  // When VITE_API_URL is explicitly set, use absolute URL
   const cleanEndpoint = endpoint.startsWith('/') ? endpoint.slice(1) : endpoint;
-  return `${baseUrl}/${cleanEndpoint}`;
+  return `${API_BASE_URL}/${cleanEndpoint}`;
 };
 
 export { API_BASE_URL };

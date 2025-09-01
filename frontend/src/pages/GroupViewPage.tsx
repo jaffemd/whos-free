@@ -1,8 +1,7 @@
 import { useState, useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
-import { Container, Paper, Title, Text, Button, Group, Loader, Center, Alert } from '@mantine/core';
+import { Container, Paper, Title, Text, Button, Group, Alert } from '@mantine/core';
 import { IconShare, IconRefresh, IconPlus, IconAlertCircle, IconCalendarPlus } from '@tabler/icons-react';
-import { notifications } from '@mantine/notifications';
 import ResponseTable from '../components/ResponseTable';
 import AddResponseModal from '../components/AddResponseModal';
 import ShareModal from '../components/ShareModal';
@@ -114,9 +113,9 @@ export default function GroupViewPage({ colorScheme, toggleColorScheme }: GroupV
       <Paper shadow="md" p={{ base: "md", sm: "xl" }} mb="md">
         <Group justify="space-between" align="flex-start" mb="md" wrap="wrap">
           <div style={{ minWidth: 0, flex: 1 }}>
-            <Title order={1} mb="sm" size={{ base: "h2", sm: "h1" }}>{group.name}</Title>
+            <Title order={1} mb="sm">{group.name}</Title>
             {group.description && (
-              <Text c="dimmed" mb="xs" size={{ base: "sm", sm: "md" }}>{group.description}</Text>
+              <Text c="dimmed" mb="xs">{group.description}</Text>
             )}
             <Text size="sm" c="dimmed">
               Date: {new Date(group.date + 'T00:00:00').toLocaleDateString()}

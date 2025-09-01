@@ -14,9 +14,10 @@ const PORT = process.env.PORT || 3001;
 const corsOptions = {
   origin: process.env.NODE_ENV === 'production' 
     ? [
-        process.env.FRONTEND_URL,
-        /\.onrender\.com$/  // Allow any Render subdomain
-      ].filter(Boolean)
+        ...(process.env.FRONTEND_URL ? [process.env.FRONTEND_URL] : []),
+        /\.vercel\.app$/,  // Allow any Vercel subdomain
+        /\.onrender\.com$/  // Keep Render support for backward compatibility
+      ]
     : [
         'http://localhost:5173',
         'http://localhost:3000',

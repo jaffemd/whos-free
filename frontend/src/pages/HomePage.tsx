@@ -14,7 +14,7 @@ interface HomePageProps {
 export default function HomePage({ colorScheme, toggleColorScheme }: HomePageProps) {
   const [name, setName] = useState('');
   const [description, setDescription] = useState('');
-  const [date, setDate] = useState<Date | null>(null);
+  const [date, setDate] = useState<string | null>(null);
   const [isLoading, setIsLoading] = useState(false);
   const navigate = useNavigate();
 
@@ -49,21 +49,8 @@ export default function HomePage({ colorScheme, toggleColorScheme }: HomePagePro
       return;
     }
 
-    // Convert date to Date object if it's a string
-    let dateObj: Date;
-    if (typeof date === 'string') {
-      // Parse the date string (format: YYYY-MM-DD)
-      dateObj = new Date(date + 'T00:00:00.000'); // Add time to ensure local timezone
-    } else if (date instanceof Date) {
-      dateObj = date;
-    } else {
-      notifications.show({
-        title: 'Validation Error',
-        message: 'Please select a valid date.',
-        color: 'red',
-      });
-      return;
-    }
+    // Parse the date string (format: YYYY-MM-DD)
+    const dateObj = new Date(date + 'T00:00:00.000'); // Add time to ensure local timezone
 
     // Validate the parsed date
     if (isNaN(dateObj.getTime())) {
@@ -98,11 +85,8 @@ export default function HomePage({ colorScheme, toggleColorScheme }: HomePagePro
       return;
     }
     
-    // Format date for API (YYYY-MM-DD) - use original string if available, otherwise format dateObj
-    const selectedString = typeof date === 'string' ? date : 
-                          dateObj.getFullYear() + '-' + 
-                          String(dateObj.getMonth() + 1).padStart(2, '0') + '-' + 
-                          String(dateObj.getDate()).padStart(2, '0');
+    // Format date for API (YYYY-MM-DD) - use the string directly since it's already in correct format
+    const selectedString = date;
 
     setIsLoading(true);
     try {
@@ -148,7 +132,7 @@ export default function HomePage({ colorScheme, toggleColorScheme }: HomePagePro
         <ColorSchemeToggle colorScheme={colorScheme} toggleColorScheme={toggleColorScheme} />
       </Group>
       <Paper shadow="md" p={{ base: "md", sm: "xl" }}>
-        <Title order={1} ta="center" mb="xl" size={{ base: "h2", sm: "h1" }}>
+        <Title order={1} ta="center" mb="xl">
           Who's Free?
         </Title>
         <form onSubmit={handleSubmit}>

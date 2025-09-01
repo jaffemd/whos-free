@@ -1,4 +1,4 @@
-import { Component, ReactNode } from 'react';
+import { Component, type ReactNode } from 'react';
 import { Container, Alert, Button, Stack } from '@mantine/core';
 import { IconAlertCircle, IconRefresh } from '@tabler/icons-react';
 

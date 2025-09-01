@@ -45,7 +45,7 @@ export default function ResponseTable({ responses }: ResponseTableProps) {
 
   return (
     <Paper shadow="md" p={{ base: "md", sm: "xl" }}>
-      <Title order={2} mb="md" size={{ base: "h3", sm: "h2" }}>Responses</Title>
+      <Title order={2} mb="md">Responses</Title>
       <Table.ScrollContainer minWidth={500}>
         <Table striped highlightOnHover>
           <Table.Thead>

@@ -77,7 +77,7 @@ export default function ShareModal({ url, onClose }: ShareModalProps) {
             {copied ? 'Copied!' : 'Copy Link'}
           </Button>
           
-          {navigator.share && (
+          {'share' in navigator && (
             <Button
               variant="light"
               onClick={handleShare}

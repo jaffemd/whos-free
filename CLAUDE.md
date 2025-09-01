@@ -19,6 +19,16 @@ Individual workspace commands:
 - `npm run dev --workspace=backend` - Start Node.js API server only
 - `npm run build --workspace=shared` - Build shared types/utilities
 
+## IMPORTANT: Always Test Your Changes
+
+**Before completing any task, ALWAYS run these commands to ensure code quality:**
+
+1. **TypeScript Check**: `npx tsc --noEmit --workspace=frontend` - Check for TypeScript errors without building
+2. **Build Test**: `npm run build` - Ensure the entire project builds successfully 
+3. **Local Testing**: `npm run dev` - Test functionality locally before deployment
+
+**Never skip this step** - TypeScript errors and build failures will prevent deployment and break the application. Always validate your changes compile and run correctly.
+
 ## Architecture
 
 ### Workspace Structure
